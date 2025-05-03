@@ -39,7 +39,9 @@ app.post('/register', async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
-
+app.get('/login',(req, res)=>{
+    // https://stackoverflow.com/questions/40076638/compare-passwords-bcryptjs search this bcrypt.compare thing
+})
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
