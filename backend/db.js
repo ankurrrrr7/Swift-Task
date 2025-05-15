@@ -14,6 +14,17 @@ const registerSchema = new mongoose.Schema({
 
 const register = mongoose.model('Register', registerSchema);
 
+//Task schema 
+const taskSchema = new mongoose.Schema({
+    title: {type: String, required: true},
+    description: {type: String, required: true},
+    due_date:{type: Date, required: true},
+    priority:{type: String, required: true},
+    status: {type: String, required: true},
+    category: {type: String, required: true}
+})
+const task = mongoose.model('Task', taskSchema);
 module.exports = {
-    register
+    register,
+    task
 };
