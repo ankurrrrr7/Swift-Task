@@ -5,7 +5,7 @@ const { createRegister } = require('./type');
 const { register } = require('./db'); 
 const jwt = require("jsonwebtoken");
 const { verifyToken } = require('./middleware');
-
+const path = require('path')
 const app = express();
 app.use(express.json());
 
@@ -26,6 +26,7 @@ app.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         const newRegister = new register({
+            userName: req.body.userName,
             email: req.body.email,
             password: hashedPassword
         });
@@ -65,7 +66,10 @@ app.post('/login', async (req, res) => {
 app.get('/home', verifyToken, (req, res) => {
     res.json({ message: `Welcome ${req.user.email}` });
 });
-
+app.use(express.static(path.join(__dirname, '../frontend')));
+app.get('/register',(req, res)=>{
+    res.sendFile(path.join(__dirname, '../frontend','login.html'))
+})
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
