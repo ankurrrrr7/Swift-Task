@@ -1,12 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-const db = process.env.DATABASE_URL;
-
-mongoose.connect(db)
-.then(() => console.log("Working"))
-.catch(err => console.log("Not working", err));
-
 const registerSchema = new mongoose.Schema({
     userName: {type: String, required: true},
     email: { type: String, required: true, unique: true },

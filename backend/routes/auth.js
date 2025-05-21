@@ -1,18 +1,17 @@
 require('dotenv').config();
-const express = require('express');
 const bcrypt = require('bcrypt');
-const { createRegister } = require('./type'); 
-const { register } = require('./db'); 
+const { createRegister } = require('../type'); 
+const { register } = require('../database/db'); 
 const jwt = require("jsonwebtoken");
-const { verifyToken } = require('./middleware');
+const { verifyToken } = require('../middleware/middleware');
 const path = require('path')
-const app = express();
-app.use(express.json());
-
+const {Router} = require('express')
+const router = Router()
+const express = require('express')
 const SECRET_KEY = process.env.SECRET_KEY; 
 
 //  Register Route
-app.post('/register', async (req, res) => {
+router.post('/signup', async (req, res) => {
     const parsed = createRegister.safeParse(req.body);
 
     if (!parsed.success) {
@@ -48,7 +47,7 @@ app.post('/register', async (req, res) => {
 });
 
 //  LOGIN Route (with fixes)
-app.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     const user = await register.findOne({ email }); 
@@ -63,13 +62,19 @@ app.post('/login', async (req, res) => {
     res.json({ token });
 });
 
-app.get('/home', verifyToken, (req, res) => {
+router.get('/home', verifyToken, (req, res) => {
     res.json({ message: `Welcome ${req.user.email}` });
 });
-app.use(express.static(path.join(__dirname, '../frontend')));
-app.get('/register',(req, res)=>{
-    res.sendFile(path.join(__dirname, '../frontend','login.html'))
+router.use(express.static(path.join(__dirname, '../frontend')));
+// router.get('/signup',(req, res)=>{
+//     res.sendFile(path.join(__dirname, '../frontend','login.html'))
+// })
+// router.get('/login',(req, res)=>{
+//     res.sendFile(path.join(__dirname, '../frontend','login.html'))
+// })
+
+router.get('/task',(req, res)=>{
+    res.sendFile(path.join(__dirname, '../frontend','main.html'))
 })
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-});
+
+module.exports =router

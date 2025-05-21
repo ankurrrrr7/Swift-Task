@@ -9,9 +9,7 @@ const createRegister = zod.object({
 const taskValidation = zod.object({
     title: zod.string(),
     description: zod.string() ,
-    due_date: zod.string().refine(date => !isNaN(Date.parse(date)), {
-        message: "Invalid date format"
-    }),
+    due_date: zod.string().transform((val)=> new Date(val).getTime()),
     priority: zod.string(),
     status: zod.string(),
     category: zod.string()
