@@ -1,10 +1,11 @@
 const { taskValidation } = require('../type');
 const { task: Task } = require('../database/db'); // ✅ Correct import and alias
 const express = require('express');
+const { verifyToken } = require('../middleware/middleware');
 const router = express.Router();
 
 // Create task
-router.post('/task', async (req, res) => {
+router.post('/task',verifyToken, async (req, res) => {
     const parsed = taskValidation.safeParse(req.body);
     if (!parsed.success) {
         return res.status(400).json({
@@ -27,7 +28,7 @@ router.post('/task', async (req, res) => {
 });
 
 // Get all tasks
-router.get('/task', async (req, res) => {
+router.get('/task',verifyToken, async (req, res) => {
     try {
         const tasks = await Task.find();
         res.status(200).json(tasks);
@@ -38,7 +39,7 @@ router.get('/task', async (req, res) => {
 });
 
 // Update task
-router.put('/task/:id', async (req, res) => {
+router.put('/task/:id',verifyToken, async (req, res) => {
     const parsed = taskValidation.safeParse(req.body);
     if (!parsed.success) {
         return res.status(400).json({
@@ -61,7 +62,7 @@ router.put('/task/:id', async (req, res) => {
 });
 
 // Delete task
-router.delete('/task/:id', async (req, res) => {
+router.delete('/task/:id',verifyToken, async (req, res) => {
     try {
         const deleted = await Task.findByIdAndDelete(req.params.id);
         if (!deleted) return res.status(404).json({ error: "Task not found" });
