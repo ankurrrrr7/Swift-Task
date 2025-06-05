@@ -63,7 +63,10 @@ router.post('/login', async (req, res) => {
 router.get('/home', verifyToken, (req, res) => {
     res.json({ message: `Welcome ${req.user.email}` });
 });
-router.use(express.static(path.join(__dirname, '../frontend')));
+router.use(express.static(path.join(__dirname, '../../public')));
+router.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public', 'signup.html'))
+})
 // router.get('/signup',(req, res)=>{
 //     res.sendFile(path.join(__dirname, '../frontend','login.html'))
 // })
@@ -72,7 +75,7 @@ router.use(express.static(path.join(__dirname, '../frontend')));
 // })
 
 router.get('/task',(req, res)=>{
-    res.sendFile(path.join(__dirname, '../frontend','main.html'))
+    res.sendFile(path.join(__dirname, '../frontend','login.html'))
 })
 
 module.exports =router
