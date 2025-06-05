@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift Task</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="signup">
+        <form class="sign-main" id="signupForm">
+            <h2>Sign Up</h2>
+            <label>Username</label>
+            <input type="text" id="username" required>
+            <label>Email</label>
+            <input type="email" id="email" required>
+            <label>Password</label>
+            <input type="password" id="password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', sendData);
+
+        function sendData(e) {
+            e.preventDefault();
+            const payload = {
+                userName: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+
+            axios.post('http://localhost:3000/signup', payload)
+                .then(response => {
+                    alert('New user added');
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Signup failed');
+                });
+        }
+    </script>
+</body>
+</html>
